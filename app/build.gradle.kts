@@ -47,12 +47,22 @@ android {
                 name = "BASE_URL",
                 value = "\"https://api.themoviedb.org/3/movie/\""
             )
+            buildConfigField(
+                type = "String",
+                name = "AUTHORIZATION",
+                value = "\"Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNjBkMTBiYjdjNzllZTg3ZmI0NDkxYWI0MzRkZTQ3YyIsInN1YiI6IjY2NDIwODlkMDNlYWU1MjIzYWYxMmYyYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.deV7aVvLIDtcHaSusAM1Hpkm6wb1qAkyuOHObPA8kkk\"",
+            )
         }
         create("integration") {
             buildConfigField(
                 type = "String",
                 name = "BASE_URL",
                 value = "\"https://api.themoviedb.org/3/movie/\""
+            )
+            buildConfigField(
+                type = "String",
+                name = "AUTHORIZATION",
+                value = "\"Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNjBkMTBiYjdjNzllZTg3ZmI0NDkxYWI0MzRkZTQ3YyIsInN1YiI6IjY2NDIwODlkMDNlYWU1MjIzYWYxMmYyYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.deV7aVvLIDtcHaSusAM1Hpkm6wb1qAkyuOHObPA8kkk\"",
             )
         }
     }
