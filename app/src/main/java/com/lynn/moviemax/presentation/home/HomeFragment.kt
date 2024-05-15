@@ -1,10 +1,13 @@
 package com.lynn.moviemax.presentation.home
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
+import coil.load
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.FragmentHomeBinding
 import com.lynn.moviemax.presentation.home.adapter.NowPlayingAdapter
@@ -13,6 +16,7 @@ import com.lynn.moviemax.presentation.home.adapter.TopRatedAdapter
 import com.lynn.moviemax.presentation.home.adapter.UpcomingAdapter
 import com.lynn.moviemax.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.random.Random
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -97,11 +101,13 @@ class HomeFragment : Fragment() {
                 doOnSuccess = {
                     it.payload?.let { data ->
                         bindNowPlaying(data)
+                        setupBanner(data)
                     }
                 },
             )
         }
     }
+
 
     private fun getPopularData() {
         viewModel.getDataPopular().observe(viewLifecycleOwner) {
@@ -139,16 +145,17 @@ class HomeFragment : Fragment() {
         }
     }
 
-    /*    private fun setupHeader() {
-            viewModel.getDataNowPlaying().observe(viewLifecycleOwner) {
-                it.proceedWhen(
-                    doOnSuccess = {
-                        it.payload?.let { data ->
-                            // Tambahkan kode untuk menampilkan data pada header di sini
-                        }
-                    },
-                    doOnLoading = {}
-                )
-            }
-        }*/
+    private fun bindBanner(number: Int, movie: List<Movie>) {
+        binding.layoutBanner.ivPosterMovie.load(movie[number].posterPath)
+        binding.layoutBanner.tvMovieName.text = movie[number].title
+        binding.layoutBanner.tvMovieDesc.text = movie[number].overview
+
+    }
+
+    private fun setupBanner(movie: List<Movie>) {
+        bindBanner(Random.nextInt(0, movie.size), movie)
+        Handler().postDelayed(7000) {
+            setupBanner(movie)
+        }
+    }
 }
