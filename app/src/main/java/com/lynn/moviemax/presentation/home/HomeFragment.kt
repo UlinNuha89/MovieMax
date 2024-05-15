@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.FragmentHomeBinding
 import com.lynn.moviemax.presentation.home.adapter.NowPlayingAdapter
+import com.lynn.moviemax.presentation.home.adapter.PopularAdapter
+import com.lynn.moviemax.presentation.home.adapter.TopRatedAdapter
+import com.lynn.moviemax.presentation.home.adapter.UpcomingAdapter
 import com.lynn.moviemax.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -16,6 +19,15 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModel()
     private val nowPlayingAdapter: NowPlayingAdapter by lazy {
         NowPlayingAdapter()
+    }
+    private val popularAdapter: PopularAdapter by lazy {
+        PopularAdapter()
+    }
+    private val upcomingAdapter: UpcomingAdapter by lazy {
+        UpcomingAdapter()
+    }
+    private val topRatedAdapter: TopRatedAdapter by lazy {
+        TopRatedAdapter()
     }
 
     override fun onCreateView(
@@ -30,16 +42,52 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //setupHeader()
         getNowPlayingData()
+        getPopularData()
+        getUpcomingData()
+        getTopRatedData()
         setupNowPlaying()
+        setupPopular()
+        setupUpcoming()
+        setupTopRated()
     }
 
     private fun bindNowPlaying(data: List<Movie>) {
         nowPlayingAdapter.submitData(data)
     }
 
+    private fun bindPopular(data: List<Movie>) {
+        popularAdapter.submitData(data)
+    }
+
+    private fun bindUpcoming(data: List<Movie>) {
+        upcomingAdapter.submitData(data)
+    }
+
+    private fun bindTopRated(data: List<Movie>) {
+        topRatedAdapter.submitData(data)
+    }
+
     private fun setupNowPlaying() {
         binding.rvItemNowPlaying.apply {
             adapter = nowPlayingAdapter
+        }
+    }
+
+    private fun setupPopular() {
+        binding.rvItemPopular.apply {
+            adapter = popularAdapter
+        }
+    }
+
+    private fun setupUpcoming() {
+        binding.rvItemUpcoming.apply {
+            adapter = upcomingAdapter
+        }
+    }
+
+    private fun setupTopRated() {
+        binding.rvItemTopRated.apply {
+            adapter = topRatedAdapter
         }
     }
 
@@ -55,16 +103,52 @@ class HomeFragment : Fragment() {
         }
     }
 
-/*    private fun setupHeader() {
-        viewModel.getDataNowPlaying().observe(viewLifecycleOwner) {
+    private fun getPopularData() {
+        viewModel.getDataPopular().observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let { data ->
-                        // Tambahkan kode untuk menampilkan data pada header di sini
+                        bindPopular(data)
                     }
                 },
-                doOnLoading = {}
             )
         }
-    }*/
+    }
+
+    private fun getUpcomingData() {
+        viewModel.getDataUpcoming().observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    it.payload?.let { data ->
+                        bindUpcoming(data)
+                    }
+                },
+            )
+        }
+    }
+
+    private fun getTopRatedData() {
+        viewModel.getDataTopRated().observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    it.payload?.let { data ->
+                        bindTopRated(data)
+                    }
+                },
+            )
+        }
+    }
+
+    /*    private fun setupHeader() {
+            viewModel.getDataNowPlaying().observe(viewLifecycleOwner) {
+                it.proceedWhen(
+                    doOnSuccess = {
+                        it.payload?.let { data ->
+                            // Tambahkan kode untuk menampilkan data pada header di sini
+                        }
+                    },
+                    doOnLoading = {}
+                )
+            }
+        }*/
 }
