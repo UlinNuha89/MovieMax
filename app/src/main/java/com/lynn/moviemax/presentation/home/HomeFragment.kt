@@ -9,18 +9,25 @@ import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.FragmentHomeBinding
 import com.lynn.moviemax.presentation.home.adapter.NowPlayingAdapter
 import com.lynn.moviemax.presentation.home.adapter.PopularAdapter
+import com.lynn.moviemax.presentation.home.adapter.TopRatedAdapter
+import com.lynn.moviemax.presentation.home.adapter.UpcomingAdapter
 import com.lynn.moviemax.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModel()
-    private val popularViewModel: PopularViewModel by viewModel()
     private val nowPlayingAdapter: NowPlayingAdapter by lazy {
         NowPlayingAdapter()
     }
-    private val PopularAdapter: PopularAdapter by lazy {
+    private val popularAdapter: PopularAdapter by lazy {
         PopularAdapter()
+    }
+    private val upcomingAdapter: UpcomingAdapter by lazy {
+        UpcomingAdapter()
+    }
+    private val topRatedAdapter: TopRatedAdapter by lazy {
+        TopRatedAdapter()
     }
 
     override fun onCreateView(
@@ -35,9 +42,13 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //setupHeader()
         getNowPlayingData()
-        //getPopularData()
+        getPopularData()
+        getUpcomingData()
+        getTopRatedData()
         setupNowPlaying()
         setupPopular()
+        setupUpcoming()
+        setupTopRated()
     }
 
     private fun bindNowPlaying(data: List<Movie>) {
@@ -45,7 +56,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun bindPopular(data: List<Movie>) {
-        PopularAdapter.submitData(data)
+        popularAdapter.submitData(data)
+    }
+
+    private fun bindUpcoming(data: List<Movie>) {
+        upcomingAdapter.submitData(data)
+    }
+
+    private fun bindTopRated(data: List<Movie>) {
+        topRatedAdapter.submitData(data)
     }
 
     private fun setupNowPlaying() {
@@ -56,7 +75,19 @@ class HomeFragment : Fragment() {
 
     private fun setupPopular() {
         binding.rvItemPopular.apply {
-            adapter = PopularAdapter
+            adapter = popularAdapter
+        }
+    }
+
+    private fun setupUpcoming() {
+        binding.rvItemUpcoming.apply {
+            adapter = upcomingAdapter
+        }
+    }
+
+    private fun setupTopRated() {
+        binding.rvItemTopRated.apply {
+            adapter = topRatedAdapter
         }
     }
 
@@ -73,11 +104,35 @@ class HomeFragment : Fragment() {
     }
 
     private fun getPopularData() {
-        popularViewModel.getDataPopular().observe(viewLifecycleOwner) {
+        viewModel.getDataPopular().observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let { data ->
                         bindPopular(data)
+                    }
+                },
+            )
+        }
+    }
+
+    private fun getUpcomingData() {
+        viewModel.getDataUpcoming().observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    it.payload?.let { data ->
+                        bindUpcoming(data)
+                    }
+                },
+            )
+        }
+    }
+
+    private fun getTopRatedData() {
+        viewModel.getDataTopRated().observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    it.payload?.let { data ->
+                        bindTopRated(data)
                     }
                 },
             )

@@ -17,5 +17,4 @@ class PopularRepositoryImpl(private val dataSource: PopularDataSource) : Popular
             dataSource.getPopular().results.toPopulars()
         }
     }
-
 }

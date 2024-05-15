@@ -1,6 +1,6 @@
 package com.lynn.moviemax.data.repository
 
-import com.lynn.moviemax.data.datasource.NowPlayingDataSource
+import com.lynn.moviemax.data.datasource.nowplaying.NowPlayingDataSource
 import com.lynn.moviemax.data.mapper.toNowPlayings
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.utils.ResultWrapper

@@ -3,6 +3,8 @@ package com.lynn.moviemax.data.source.network.service
 import com.lynn.moviemax.BuildConfig
 import com.lynn.moviemax.data.source.network.model.NowPlayingResponse
 import com.lynn.moviemax.data.source.network.model.PopularResponse
+import com.lynn.moviemax.data.source.network.model.TopRatedResponse
+import com.lynn.moviemax.data.source.network.model.UpcomingResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,11 +25,35 @@ interface MovieMaxApiService {
         @Query("page") page: Int = 1
     ): NowPlayingResponse
 
+    @Headers(
+        "Accept: application/json",
+        "Authorization: ${BuildConfig.AUTHORIZATION}",
+    )
     @GET("popular")
     suspend fun getPopular(
         @Query("language") language: String = "id",
         @Query("page") page: Int = 1
     ): PopularResponse
+
+    @Headers(
+        "Accept: application/json",
+        "Authorization: ${BuildConfig.AUTHORIZATION}",
+    )
+    @GET("upcoming")
+    suspend fun getUpcoming(
+        @Query("language") language: String = "id",
+        @Query("page") page: Int = 1
+    ): UpcomingResponse
+
+    @Headers(
+        "Accept: application/json",
+        "Authorization: ${BuildConfig.AUTHORIZATION}",
+    )
+    @GET("top_rated")
+    suspend fun getTopRated(
+        @Query("language") language: String = "id",
+        @Query("page") page: Int = 1
+    ): TopRatedResponse
 
     companion object {
         @JvmStatic
