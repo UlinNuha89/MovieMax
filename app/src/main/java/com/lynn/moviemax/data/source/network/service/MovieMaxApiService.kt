@@ -2,6 +2,7 @@ package com.lynn.moviemax.data.source.network.service
 
 import com.lynn.moviemax.BuildConfig
 import com.lynn.moviemax.data.source.network.model.NowPlayingResponse
+import com.lynn.moviemax.data.source.network.model.PopularResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -21,6 +22,12 @@ interface MovieMaxApiService {
         @Query("language") language: String = "id",
         @Query("page") page: Int = 1
     ): NowPlayingResponse
+
+    @GET("popular")
+    suspend fun getPopular(
+        @Query("language") language: String = "id",
+        @Query("page") page: Int = 1
+    ): PopularResponse
 
     companion object {
         @JvmStatic
