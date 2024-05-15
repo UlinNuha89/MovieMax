@@ -21,7 +21,7 @@ interface MovieMaxApiService {
     )
     @GET("now_playing")
     suspend fun getNowPlaying(
-        @Query("language") language: String = "id",
+        @Query("language") language: String = "en-US",
         @Query("page") page: Int = 1
     ): NowPlayingResponse
 
