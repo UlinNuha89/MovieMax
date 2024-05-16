@@ -20,18 +20,18 @@ class SeeMoreActivity : AppCompatActivity() {
     private val binding: ActivitySeeMoreBinding by lazy {
         ActivitySeeMoreBinding.inflate(layoutInflater)
     }
-    private val viewModel: SeeMoreViewModel by viewModel{
+    private val viewModel: SeeMoreViewModel by viewModel {
         parametersOf(intent.extras)
     }
     private val seeMoreAdapter: SeeMoreAdapter by lazy {
-        SeeMoreAdapter{
+        SeeMoreAdapter {
             showBottomSheetInfo(it)
         }
     }
 
     companion object {
         const val EXTRAS_ITEM = "EXTRAS_ITEM"
-        fun startActivity(context: Context, category:String) {
+        fun startActivity(context: Context, category: String) {
             val intent = Intent(context, SeeMoreActivity::class.java)
             intent.putExtra(EXTRAS_ITEM, category)
             context.startActivity(intent)
@@ -41,14 +41,21 @@ class SeeMoreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setOnClick()
         setUpAdapter()
         observeData()
+    }
+
+    private fun setOnClick() {
+        binding.btnBack.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun observeData() {
         viewModel.header.let {
             binding.tvHeader.text = it
-            when(it){
+            when (it) {
                 "Top Rated" -> setTopRated()
                 "Popular" -> setPopular()
                 "Up Coming" -> setUpComing()
@@ -70,6 +77,7 @@ class SeeMoreActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun setTopRated() {
         lifecycleScope.launch {
             viewModel.topRated().collectLatest {
@@ -77,6 +85,7 @@ class SeeMoreActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun setPopular() {
         lifecycleScope.launch {
             viewModel.popular().collectLatest {
@@ -84,6 +93,7 @@ class SeeMoreActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun setUpComing() {
         lifecycleScope.launch {
             viewModel.upComing().collectLatest {
@@ -96,19 +106,17 @@ class SeeMoreActivity : AppCompatActivity() {
         val bottomSheetDialog = BottomSheetDialog(this)
         val bottomSheetBinding = LayoutSheetViewBinding.inflate(layoutInflater)
         bottomSheetBinding.apply {
-            ivBannerFilm.load("https://image.tmdb.org/t/p/w500${movie.backdropPath}")
-            ivPoster.load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
+            ivBannerFilm.load(movie.backdropPath)
+            ivPoster.load(movie.posterPath)
             tvTitleFilm.text = movie.title
             tvDescFilm.text = movie.overview
             tvRelease.text = movie.releaseDate
             tvRating.text = movie.voteAverage.toString()
         }
-
         bottomSheetBinding.btnShared.setOnClickListener {
             bottomSheetDialog.dismiss()
             showShareBottomSheet(movie)
         }
-
         bottomSheetDialog.setContentView(bottomSheetBinding.root)
         bottomSheetDialog.show()
     }

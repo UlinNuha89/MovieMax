@@ -6,7 +6,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import coil.load
@@ -170,26 +169,23 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun bindBanner(number: Int, movie: List<Movie>) {
-        binding.layoutBanner.ivPosterMovie.load(movie[number].posterPath)
-        binding.layoutBanner.tvMovieName.text = movie[number].title
-        binding.layoutBanner.tvMovieDesc.text = movie[number].overview
+    private fun bindBanner(movie: Movie) {
+        binding.layoutBanner.ivPosterMovie.load(movie.posterPath)
+        binding.layoutBanner.tvMovieName.text = movie.title
+        binding.layoutBanner.tvMovieDesc.text = movie.overview
+        binding.layoutBanner.ivInfo.setOnClickListener {
+            showBottomSheetInfo(movie)
+        }
+        binding.layoutBanner.ivShare.setOnClickListener {
+            showShareBottomSheet(movie)
+        }
     }
 
     private fun setupBanner(movie: List<Movie>) {
         val randomIndex = Random.nextInt(0, movie.size)
-        val currentMovie = movie[randomIndex]
-        bindBanner(randomIndex, movie)
-
+        bindBanner(movie[randomIndex])
         Handler().postDelayed(7000) {
             setupBanner(movie)
-        }
-
-        binding.layoutBanner.ivInfo.setOnClickListener {
-            showBottomSheetInfo(currentMovie)
-        }
-        binding.layoutBanner.ivShare.setOnClickListener {
-            showShareBottomSheet(currentMovie)
         }
     }
 
@@ -198,8 +194,8 @@ class HomeFragment : Fragment() {
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         val bottomSheetBinding = LayoutSheetViewBinding.inflate(layoutInflater)
         bottomSheetBinding.apply {
-            ivBannerFilm.load("https://image.tmdb.org/t/p/w500${movie.backdropPath}")
-            ivPoster.load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
+            ivBannerFilm.load(movie.backdropPath)
+            ivPoster.load(movie.posterPath)
             tvTitleFilm.text = movie.title
             tvDescFilm.text = movie.overview
             tvRelease.text = movie.releaseDate
