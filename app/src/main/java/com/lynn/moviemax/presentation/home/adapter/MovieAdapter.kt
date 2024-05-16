@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.lynn.moviemax.data.model.Movie
-import com.lynn.moviemax.databinding.ItemTopRatedBinding
+import com.lynn.moviemax.databinding.ItemMovieBinding
 
-class TopRatedAdapter :
-    RecyclerView.Adapter<TopRatedAdapter.ItemTopRatedViewHolder>() {
+
+class MovieAdapter(private val itemClick: (Movie) -> Unit) :
+    RecyclerView.Adapter<MovieAdapter.ItemMovieViewHolder>() {
     private val dataDiffer =
         AsyncListDiffer(
             this,
@@ -38,14 +39,14 @@ class TopRatedAdapter :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ItemTopRatedViewHolder {
+    ): ItemMovieViewHolder {
         val binding =
-            ItemTopRatedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ItemTopRatedViewHolder(binding)
+            ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemMovieViewHolder(binding, itemClick)
     }
 
     override fun onBindViewHolder(
-        holder: ItemTopRatedViewHolder,
+        holder: ItemMovieViewHolder,
         position: Int,
     ) {
         holder.bindView(dataDiffer.currentList[position])
@@ -53,13 +54,17 @@ class TopRatedAdapter :
 
     override fun getItemCount(): Int = dataDiffer.currentList.size
 
-    class ItemTopRatedViewHolder(
-        private val binding: ItemTopRatedBinding,
+    class ItemMovieViewHolder(
+        private val binding: ItemMovieBinding,
+        val itemClick: (Movie) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bindView(item: Movie) {
             with(item) {
-                binding.ivTopRated.load(item.posterPath) {
+                binding.ivMovieImg.load(item.posterPath) {
                     crossfade(true)
+                }
+                itemView.setOnClickListener {
+                    itemClick(this)
                 }
 
             }

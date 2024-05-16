@@ -24,6 +24,7 @@ mockk = "1.13.10"
 coroutine-test = "1.7.2"
 turbine = "1.0.0"
 core-testing = "2.2.0"
+paging_version = "3.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -72,6 +73,10 @@ mockk-agent = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutine-test" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "core-testing" }
+
+#paging 3
+paging = { group = "androidx.paging",name = "paging-runtime",version.ref= "paging_version"}
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

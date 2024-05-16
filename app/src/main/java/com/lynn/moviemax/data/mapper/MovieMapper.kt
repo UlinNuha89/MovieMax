@@ -1,9 +1,9 @@
 package com.lynn.moviemax.data.mapper
 
 import com.lynn.moviemax.data.model.Movie
-import com.lynn.moviemax.data.source.network.model.itemresponse.NowPlayingItemResponse
+import com.lynn.moviemax.data.source.network.model.itemresponse.MovieItemResponse
 
-fun NowPlayingItemResponse?.toNowPlaying() =
+fun MovieItemResponse?.toMovie() =
     Movie(
         id = this?.id ?:0,
         title = this?.title.orEmpty(),
@@ -15,7 +15,7 @@ fun NowPlayingItemResponse?.toNowPlaying() =
         voteCount = this?.voteCount ?:0
     )
 
-fun Collection<NowPlayingItemResponse>?.toNowPlayings() =
+fun Collection<MovieItemResponse>?.toMovies() =
     this?.map {
-        it.toNowPlaying()
+        it.toMovie()
     } ?: listOf()

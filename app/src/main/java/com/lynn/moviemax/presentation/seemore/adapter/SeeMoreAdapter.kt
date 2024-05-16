@@ -1,20 +1,20 @@
-package com.lynn.moviemax.presentation.home.adapter
+package com.lynn.moviemax.presentation.seemore.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.lynn.moviemax.data.model.Movie
-import com.lynn.moviemax.databinding.ItemNowPlayingBinding
+import com.lynn.moviemax.databinding.ItemSeeMoreBinding
 
+class SeeMoreAdapter() :
+    PagingDataAdapter<Movie, SeeMoreAdapter.ItemSeeMoreViewHolder>(COMPARATOR) {
 
-class NowPlayingAdapter:
-    RecyclerView.Adapter<NowPlayingAdapter.ItemNowPlayingViewHolder>() {
-    private val dataDiffer =
-        AsyncListDiffer(
-            this,
+    companion object {
+        private val COMPARATOR =
             object : DiffUtil.ItemCallback<Movie>() {
                 override fun areItemsTheSame(
                     oldItem: Movie,
@@ -29,40 +29,37 @@ class NowPlayingAdapter:
                 ): Boolean {
                     return oldItem.hashCode() == newItem.hashCode()
                 }
-            },
-        )
-
-    fun submitData(data: List<Movie>) {
-        dataDiffer.submitList(data)
+            }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int,
-    ): ItemNowPlayingViewHolder {
-        val binding =
-            ItemNowPlayingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ItemNowPlayingViewHolder(binding)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemSeeMoreViewHolder {
+        val binding = ItemSeeMoreBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return ItemSeeMoreViewHolder(binding)
     }
 
     override fun onBindViewHolder(
-        holder: ItemNowPlayingViewHolder,
-        position: Int,
+        holder: ItemSeeMoreViewHolder,
+        position: Int
     ) {
-        holder.bindView(dataDiffer.currentList[position])
+        val movie = getItem(position)
+        if (movie!= null){
+            holder.bindView(movie)
+        }
     }
 
-    override fun getItemCount(): Int = dataDiffer.currentList.size
-
-    class ItemNowPlayingViewHolder(
-        private val binding: ItemNowPlayingBinding,
+    class ItemSeeMoreViewHolder(
+        private val binding: ItemSeeMoreBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bindView(item: Movie) {
             with(item) {
-                binding.ivNowPlaying.load(item.posterPath) {
+                binding.ivMovieImg.load(item.posterPath) {
                     crossfade(true)
                 }
-
             }
         }
     }

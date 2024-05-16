@@ -5,15 +5,14 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import coil.load
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.FragmentHomeBinding
-import com.lynn.moviemax.presentation.home.adapter.NowPlayingAdapter
-import com.lynn.moviemax.presentation.home.adapter.PopularAdapter
-import com.lynn.moviemax.presentation.home.adapter.TopRatedAdapter
-import com.lynn.moviemax.presentation.home.adapter.UpcomingAdapter
+import com.lynn.moviemax.presentation.home.adapter.MovieAdapter
+import com.lynn.moviemax.presentation.seemore.SeeMoreActivity
 import com.lynn.moviemax.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.random.Random
@@ -21,17 +20,25 @@ import kotlin.random.Random
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModel()
-    private val nowPlayingAdapter: NowPlayingAdapter by lazy {
-        NowPlayingAdapter()
+    private val nowPlayingAdapter: MovieAdapter by lazy {
+        MovieAdapter{
+            Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
+        }
     }
-    private val popularAdapter: PopularAdapter by lazy {
-        PopularAdapter()
+    private val popularAdapter: MovieAdapter by lazy {
+        MovieAdapter{
+            Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
+        }
     }
-    private val upcomingAdapter: UpcomingAdapter by lazy {
-        UpcomingAdapter()
+    private val upcomingAdapter: MovieAdapter by lazy {
+        MovieAdapter{
+            Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
+        }
     }
-    private val topRatedAdapter: TopRatedAdapter by lazy {
-        TopRatedAdapter()
+    private val topRatedAdapter: MovieAdapter by lazy {
+        MovieAdapter{
+            Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCreateView(
@@ -44,7 +51,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //setupHeader()
+        setupOnclickSeeMore()
         getNowPlayingData()
         getPopularData()
         getUpcomingData()
@@ -53,6 +60,21 @@ class HomeFragment : Fragment() {
         setupPopular()
         setupUpcoming()
         setupTopRated()
+    }
+
+    private fun setupOnclickSeeMore() {
+        binding.ivSmmNowplaying.setOnClickListener {
+            SeeMoreActivity.startActivity(requireContext(),"Now Playing")
+        }
+        binding.ivSmmPopular.setOnClickListener {
+            SeeMoreActivity.startActivity(requireContext(),"Popular")
+        }
+        binding.ivSmmToprated.setOnClickListener {
+            SeeMoreActivity.startActivity(requireContext(),"Top Rated")
+        }
+        binding.ivSmmUpcomingmovie.setOnClickListener {
+            SeeMoreActivity.startActivity(requireContext(),"Up Coming")
+        }
     }
 
     private fun bindNowPlaying(data: List<Movie>) {
