@@ -1,13 +1,13 @@
 package com.lynn.moviemax.di
 
-import com.lynn.moviemax.data.datasource.mylist.MyListDataSource
-import com.lynn.moviemax.data.datasource.mylist.MyListDataSourceImpl
 import com.lynn.moviemax.data.datasource.NowPlayingApiDataSource
 import com.lynn.moviemax.data.datasource.NowPlayingDataSource
 import com.lynn.moviemax.data.repository.MyListRepository
 import com.lynn.moviemax.data.repository.MyListRepositoryImpl
 import com.lynn.moviemax.data.repository.NowPlayingRepository
 import com.lynn.moviemax.data.repository.NowPlayingRepositoryImpl
+import com.lynn.moviemax.data.datasource.mylist.MyListDataSource
+import com.lynn.moviemax.data.datasource.mylist.MyListDataSourceImpl
 import com.lynn.moviemax.data.source.local.database.AppDatabase
 import com.lynn.moviemax.data.source.local.database.dao.MyListDao
 import com.lynn.moviemax.data.source.network.service.MovieMaxApiService
