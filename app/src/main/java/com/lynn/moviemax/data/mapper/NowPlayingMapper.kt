@@ -1,6 +1,7 @@
 package com.lynn.moviemax.data.mapper
 
 import com.lynn.moviemax.data.model.Movie
+import com.lynn.moviemax.data.source.local.database.entity.MovieEntity
 import com.lynn.moviemax.data.source.network.model.itemresponse.NowPlayingItemResponse
 
 fun NowPlayingItemResponse?.toNowPlaying() =
