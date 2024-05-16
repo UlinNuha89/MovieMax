@@ -1,9 +1,8 @@
 package com.lynn.moviemax.data.repository
 
-import com.lynn.moviemax.data.datasource.MyListDataSource
+import com.lynn.moviemax.data.datasource.mylist.MyListDataSource
 import com.lynn.moviemax.data.mapper.toMovieEntity
 import com.lynn.moviemax.data.mapper.toMovieList
-import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.data.model.MyList
 import com.lynn.moviemax.data.source.local.database.entity.MovieEntity
 import com.lynn.moviemax.utils.ResultWrapper
