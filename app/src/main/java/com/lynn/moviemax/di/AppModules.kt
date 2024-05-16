@@ -1,7 +1,7 @@
 package com.lynn.moviemax.di
 
-import com.lynn.moviemax.data.datasource.MyListDataSource
-import com.lynn.moviemax.data.datasource.MyListDataSourceImpl
+import com.lynn.moviemax.data.datasource.mylist.MyListDataSource
+import com.lynn.moviemax.data.datasource.mylist.MyListDataSourceImpl
 import com.lynn.moviemax.data.datasource.NowPlayingApiDataSource
 import com.lynn.moviemax.data.datasource.NowPlayingDataSource
 import com.lynn.moviemax.data.repository.MyListRepository
