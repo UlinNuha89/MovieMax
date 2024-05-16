@@ -1,7 +1,7 @@
 package com.lynn.moviemax.data.datasource.upcoming
 
-import com.lynn.moviemax.data.source.network.model.UpcomingResponse
+import com.lynn.moviemax.data.source.network.model.MovieResponse
 
 interface UpcomingDataSource {
-    suspend fun getUpcoming(): UpcomingResponse
+    suspend fun getUpcoming(): MovieResponse
 }

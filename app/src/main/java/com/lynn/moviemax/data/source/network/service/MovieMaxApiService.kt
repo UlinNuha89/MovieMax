@@ -1,10 +1,7 @@
 package com.lynn.moviemax.data.source.network.service
 
 import com.lynn.moviemax.BuildConfig
-import com.lynn.moviemax.data.source.network.model.NowPlayingResponse
-import com.lynn.moviemax.data.source.network.model.PopularResponse
-import com.lynn.moviemax.data.source.network.model.TopRatedResponse
-import com.lynn.moviemax.data.source.network.model.UpcomingResponse
+import com.lynn.moviemax.data.source.network.model.MovieResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,8 +19,8 @@ interface MovieMaxApiService {
     @GET("now_playing")
     suspend fun getNowPlaying(
         @Query("language") language: String = "en-US",
-        @Query("page") page: Int = 1
-    ): NowPlayingResponse
+        @Query("page") page: Int? = 1
+    ): MovieResponse
 
     @Headers(
         "Accept: application/json",
@@ -31,9 +28,9 @@ interface MovieMaxApiService {
     )
     @GET("popular")
     suspend fun getPopular(
-        @Query("language") language: String = "id",
-        @Query("page") page: Int = 1
-    ): PopularResponse
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int? = 1
+    ): MovieResponse
 
     @Headers(
         "Accept: application/json",
@@ -41,9 +38,9 @@ interface MovieMaxApiService {
     )
     @GET("upcoming")
     suspend fun getUpcoming(
-        @Query("language") language: String = "id",
-        @Query("page") page: Int = 1
-    ): UpcomingResponse
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int? = 1
+    ): MovieResponse
 
     @Headers(
         "Accept: application/json",
@@ -51,9 +48,9 @@ interface MovieMaxApiService {
     )
     @GET("top_rated")
     suspend fun getTopRated(
-        @Query("language") language: String = "id",
-        @Query("page") page: Int = 1
-    ): TopRatedResponse
+        @Query("language") language: String = "en-US",
+        @Query("page") page: Int? = 1
+    ): MovieResponse
 
     companion object {
         @JvmStatic

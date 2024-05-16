@@ -90,6 +90,7 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp)
     implementation(libs.koin.android)
+    implementation(libs.paging)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

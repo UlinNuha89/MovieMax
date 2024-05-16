@@ -49,4 +49,15 @@
         <item name="fontFamily">@font/font_montserrat</item>
 
     </style>
+    <style name="bg_heading">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="bg_heading.margins">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
+
+
 </resources>
