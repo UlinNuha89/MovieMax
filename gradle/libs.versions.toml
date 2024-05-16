@@ -25,6 +25,7 @@ coroutine-test = "1.7.2"
 turbine = "1.0.0"
 core-testing = "2.2.0"
 paging_version = "3.1.1"
+pagingCommonAndroid = "3.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -76,6 +77,7 @@ core-testing = { group = "androidx.arch.core", name = "core-testing", version.re
 
 #paging 3
 paging = { group = "androidx.paging",name = "paging-runtime",version.ref= "paging_version"}
+androidx-paging-common-android = { group = "androidx.paging", name = "paging-common-android", version.ref = "pagingCommonAndroid" }
 
 
 [plugins]

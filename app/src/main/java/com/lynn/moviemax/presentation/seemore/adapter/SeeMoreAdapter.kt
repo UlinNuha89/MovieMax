@@ -10,7 +10,7 @@ import coil.load
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.ItemSeeMoreBinding
 
-class SeeMoreAdapter() :
+class SeeMoreAdapter(val itemClick: (Movie) -> Unit) :
     PagingDataAdapter<Movie, SeeMoreAdapter.ItemSeeMoreViewHolder>(COMPARATOR) {
 
     companion object {
@@ -39,7 +39,7 @@ class SeeMoreAdapter() :
             parent,
             false
         )
-        return ItemSeeMoreViewHolder(binding)
+        return ItemSeeMoreViewHolder(binding, itemClick)
     }
 
     override fun onBindViewHolder(
@@ -54,11 +54,15 @@ class SeeMoreAdapter() :
 
     class ItemSeeMoreViewHolder(
         private val binding: ItemSeeMoreBinding,
+        val itemClick: (Movie) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bindView(item: Movie) {
             with(item) {
                 binding.ivMovieImg.load(item.posterPath) {
                     crossfade(true)
+                }
+                itemView.setOnClickListener {
+                    itemClick(this)
                 }
             }
         }
