@@ -1,5 +1,6 @@
 package com.lynn.moviemax.presentation.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -9,8 +10,10 @@ import android.widget.Toast
 import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import coil.load
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.FragmentHomeBinding
+import com.lynn.moviemax.databinding.LayoutSheetViewBinding
 import com.lynn.moviemax.presentation.home.adapter.MovieAdapter
 import com.lynn.moviemax.presentation.seemore.SeeMoreActivity
 import com.lynn.moviemax.utils.proceedWhen
@@ -21,23 +24,23 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModel()
     private val nowPlayingAdapter: MovieAdapter by lazy {
-        MovieAdapter{
-            Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
+        MovieAdapter {
+            showBottomSheetInfo(it)
         }
     }
     private val popularAdapter: MovieAdapter by lazy {
-        MovieAdapter{
-            Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
+        MovieAdapter {
+            showBottomSheetInfo(it)
         }
     }
     private val upcomingAdapter: MovieAdapter by lazy {
-        MovieAdapter{
-            Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
+        MovieAdapter {
+            showBottomSheetInfo(it)
         }
     }
     private val topRatedAdapter: MovieAdapter by lazy {
-        MovieAdapter{
-            Toast.makeText(requireContext(), it.title, Toast.LENGTH_SHORT).show()
+        MovieAdapter {
+            showBottomSheetInfo(it)
         }
     }
 
@@ -64,16 +67,16 @@ class HomeFragment : Fragment() {
 
     private fun setupOnclickSeeMore() {
         binding.ivSmmNowplaying.setOnClickListener {
-            SeeMoreActivity.startActivity(requireContext(),"Now Playing")
+            SeeMoreActivity.startActivity(requireContext(), "Now Playing")
         }
         binding.ivSmmPopular.setOnClickListener {
-            SeeMoreActivity.startActivity(requireContext(),"Popular")
+            SeeMoreActivity.startActivity(requireContext(), "Popular")
         }
         binding.ivSmmToprated.setOnClickListener {
-            SeeMoreActivity.startActivity(requireContext(),"Top Rated")
+            SeeMoreActivity.startActivity(requireContext(), "Top Rated")
         }
         binding.ivSmmUpcomingmovie.setOnClickListener {
-            SeeMoreActivity.startActivity(requireContext(),"Up Coming")
+            SeeMoreActivity.startActivity(requireContext(), "Up Coming")
         }
     }
 
@@ -171,13 +174,55 @@ class HomeFragment : Fragment() {
         binding.layoutBanner.ivPosterMovie.load(movie[number].posterPath)
         binding.layoutBanner.tvMovieName.text = movie[number].title
         binding.layoutBanner.tvMovieDesc.text = movie[number].overview
-
     }
 
     private fun setupBanner(movie: List<Movie>) {
-        bindBanner(Random.nextInt(0, movie.size), movie)
+        val randomIndex = Random.nextInt(0, movie.size)
+        val currentMovie = movie[randomIndex]
+        bindBanner(randomIndex, movie)
+
         Handler().postDelayed(7000) {
             setupBanner(movie)
         }
+
+        binding.layoutBanner.ivInfo.setOnClickListener {
+            showBottomSheetInfo(currentMovie)
+        }
+        binding.layoutBanner.ivShare.setOnClickListener {
+            showShareBottomSheet(currentMovie)
+        }
+    }
+
+
+    private fun showBottomSheetInfo(movie: Movie) {
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        val bottomSheetBinding = LayoutSheetViewBinding.inflate(layoutInflater)
+        bottomSheetBinding.apply {
+            ivBannerFilm.load("https://image.tmdb.org/t/p/w500${movie.backdropPath}")
+            ivPoster.load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
+            tvTitleFilm.text = movie.title
+            tvDescFilm.text = movie.overview
+            tvRelease.text = movie.releaseDate
+            tvRating.text = movie.voteAverage.toString()
+        }
+
+        bottomSheetBinding.btnShared.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            showShareBottomSheet(movie)
+        }
+
+        bottomSheetDialog.setContentView(bottomSheetBinding.root)
+        bottomSheetDialog.show()
+    }
+
+    private fun showShareBottomSheet(movie: Movie) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "Check out this movie: ${movie.title}")
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(intent, null)
+        startActivity(shareIntent)
     }
 }

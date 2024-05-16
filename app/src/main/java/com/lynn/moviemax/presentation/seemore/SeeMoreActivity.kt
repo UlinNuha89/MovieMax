@@ -5,7 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import coil.load
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.ActivitySeeMoreBinding
+import com.lynn.moviemax.databinding.LayoutSheetViewBinding
 import com.lynn.moviemax.presentation.seemore.adapter.SeeMoreAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -20,7 +24,9 @@ class SeeMoreActivity : AppCompatActivity() {
         parametersOf(intent.extras)
     }
     private val seeMoreAdapter: SeeMoreAdapter by lazy {
-        SeeMoreAdapter()
+        SeeMoreAdapter{
+            showBottomSheetInfo(it)
+        }
     }
 
     companion object {
@@ -84,5 +90,37 @@ class SeeMoreActivity : AppCompatActivity() {
                 seeMoreAdapter.submitData(it)
             }
         }
+    }
+
+    private fun showBottomSheetInfo(movie: Movie) {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheetBinding = LayoutSheetViewBinding.inflate(layoutInflater)
+        bottomSheetBinding.apply {
+            ivBannerFilm.load("https://image.tmdb.org/t/p/w500${movie.backdropPath}")
+            ivPoster.load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
+            tvTitleFilm.text = movie.title
+            tvDescFilm.text = movie.overview
+            tvRelease.text = movie.releaseDate
+            tvRating.text = movie.voteAverage.toString()
+        }
+
+        bottomSheetBinding.btnShared.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            showShareBottomSheet(movie)
+        }
+
+        bottomSheetDialog.setContentView(bottomSheetBinding.root)
+        bottomSheetDialog.show()
+    }
+
+    private fun showShareBottomSheet(movie: Movie) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "Check out this movie: ${movie.title}")
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(intent, null)
+        startActivity(shareIntent)
     }
 }
