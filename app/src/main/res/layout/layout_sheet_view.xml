@@ -16,6 +16,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <ImageView
                 android:id="@+id/iv_banner_film"
                 android:layout_width="match_parent"
@@ -30,7 +31,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_black_gradient_banner"/>
+                android:background="@drawable/bg_black_gradient_banner" />
         </FrameLayout>
 
         <ImageView
@@ -60,14 +61,25 @@
             app:layout_constraintTop_toBottomOf="@id/fl_banner_film"
             tools:text="Kung Fu Panda 4" />
 
+        <ImageView
+            android:id="@+id/ic_date"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="14dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_date"
+            app:layout_constraintBottom_toBottomOf="@id/iv_star"
+            app:layout_constraintStart_toEndOf="@id/iv_poster"
+            app:layout_constraintTop_toTopOf="@id/iv_star" />
+
         <TextView
             android:id="@+id/tv_release"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@id/iv_poster"
+            app:layout_constraintStart_toEndOf="@id/ic_date"
             app:layout_constraintTop_toBottomOf="@id/tv_title_film"
             tools:text="2023-02-10" />
 
@@ -193,8 +205,8 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="10dp"
             android:text="@string/text_share"
-            android:textSize="11sp"
             android:textColor="@color/white"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_my_lists"
