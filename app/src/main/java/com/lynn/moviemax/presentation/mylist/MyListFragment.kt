@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.lynn.moviemax.R
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.FragmentMylistBinding
 import com.lynn.moviemax.databinding.LayoutSheetViewBinding
@@ -109,7 +108,7 @@ class MyListFragment : Fragment() {
         val intent =
             Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "Check out this movie: ${movie.title}")
+                putExtra(Intent.EXTRA_TEXT, "Check out this movie: ${movie.posterPath}")
                 type = "text/plain"
             }
 
@@ -128,7 +127,7 @@ class MyListFragment : Fragment() {
                     binding.btnRemoveMyList.isVisible = true
                     binding.pbLoadingList.isVisible = false
                     binding.btnRemoveMyList.setOnClickListener {
-                        viewModel.removeMovie(movie)
+                        viewModel.removeFromMyList(movie)
                         checkMovie(movie, binding)
                     }
                 },
@@ -152,14 +151,8 @@ class MyListFragment : Fragment() {
                     binding.btnRemoveMyList.isVisible = true
                     binding.pbLoadingList.isVisible = false
                     binding.btnRemoveMyList.setOnClickListener {
-                        viewModel.removeMovie(movie)
+                        removeFromMyList(movie, binding)
                     }
-                    binding.tvMyLists.text = getString(R.string.text_mylist_remove)
-                },
-                doOnLoading = {
-                    binding.btnAddMyList.isVisible = false
-                    binding.btnRemoveMyList.isVisible = false
-                    binding.pbLoadingList.isVisible = true
                 },
                 doOnEmpty = {
                     binding.btnAddMyList.isVisible = true
@@ -168,7 +161,30 @@ class MyListFragment : Fragment() {
                     binding.btnAddMyList.setOnClickListener {
                         addToMyList(movie, binding)
                     }
-                    binding.tvMyLists.text = getString(R.string.text_my_list_add)
+                },
+            )
+        }
+    }
+
+    private fun removeFromMyList(
+        movie: Movie,
+        binding: LayoutSheetViewBinding,
+    ) {
+        viewModel.removeFromMyList(movie).observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.btnAddMyList.isVisible = true
+                    binding.btnRemoveMyList.isVisible = false
+                    binding.pbLoadingList.isVisible = false
+                    binding.btnRemoveMyList.setOnClickListener {
+                        viewModel.addToMyList(movie)
+                        checkMovie(movie, binding)
+                    }
+                },
+                doOnLoading = {
+                    binding.btnAddMyList.isVisible = false
+                    binding.btnRemoveMyList.isVisible = false
+                    binding.pbLoadingList.isVisible = true
                 },
             )
         }

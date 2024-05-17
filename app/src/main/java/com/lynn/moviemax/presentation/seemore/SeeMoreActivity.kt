@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.lynn.moviemax.R
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.ActivitySeeMoreBinding
 import com.lynn.moviemax.databinding.LayoutSheetViewBinding
@@ -133,7 +132,7 @@ class SeeMoreActivity : AppCompatActivity() {
         val intent =
             Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "Check out this movie: ${movie.title}")
+                putExtra(Intent.EXTRA_TEXT, "Check out this movie: ${movie.posterPath}")
                 type = "text/plain"
             }
 
@@ -152,7 +151,7 @@ class SeeMoreActivity : AppCompatActivity() {
                     binding.btnRemoveMyList.isVisible = true
                     binding.pbLoadingList.isVisible = false
                     binding.btnRemoveMyList.setOnClickListener {
-                        viewModel.removeMovie(movie)
+                        viewModel.removeFromMyList(movie)
                         checkMovie(movie, binding)
                     }
                 },
@@ -176,14 +175,8 @@ class SeeMoreActivity : AppCompatActivity() {
                     binding.btnRemoveMyList.isVisible = true
                     binding.pbLoadingList.isVisible = false
                     binding.btnRemoveMyList.setOnClickListener {
-                        viewModel.removeMovie(movie)
+                        removeFromMyList(movie, binding)
                     }
-                    binding.tvMyLists.text = getString(R.string.text_mylist_remove)
-                },
-                doOnLoading = {
-                    binding.btnAddMyList.isVisible = false
-                    binding.btnRemoveMyList.isVisible = false
-                    binding.pbLoadingList.isVisible = true
                 },
                 doOnEmpty = {
                     binding.btnAddMyList.isVisible = true
@@ -192,7 +185,30 @@ class SeeMoreActivity : AppCompatActivity() {
                     binding.btnAddMyList.setOnClickListener {
                         addToMyList(movie, binding)
                     }
-                    binding.tvMyLists.text = getString(R.string.text_my_list_add)
+                },
+            )
+        }
+    }
+
+    private fun removeFromMyList(
+        movie: Movie,
+        binding: LayoutSheetViewBinding,
+    ) {
+        viewModel.removeFromMyList(movie).observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.btnAddMyList.isVisible = true
+                    binding.btnRemoveMyList.isVisible = false
+                    binding.pbLoadingList.isVisible = false
+                    binding.btnRemoveMyList.setOnClickListener {
+                        viewModel.addToMyList(movie)
+                        checkMovie(movie, binding)
+                    }
+                },
+                doOnLoading = {
+                    binding.btnAddMyList.isVisible = false
+                    binding.btnRemoveMyList.isVisible = false
+                    binding.pbLoadingList.isVisible = true
                 },
             )
         }

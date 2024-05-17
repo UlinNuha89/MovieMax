@@ -3,7 +3,6 @@ package com.lynn.moviemax.presentation.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.data.repository.MyListRepository
 import com.lynn.moviemax.data.repository.NowPlayingRepository
@@ -12,8 +11,6 @@ import com.lynn.moviemax.data.repository.TopRatedRepository
 import com.lynn.moviemax.data.repository.UpcomingRepository
 import com.lynn.moviemax.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val nowPlayingRepository: NowPlayingRepository,
@@ -42,9 +39,9 @@ class HomeViewModel(
         }
     }
 
-    fun removeMovie(item: Movie) {
-        viewModelScope.launch(Dispatchers.IO) {
-            myListRepository.deleteMovie(item).collect()
+    fun removeFromMyList(movie: Movie): LiveData<ResultWrapper<Boolean>> {
+        return movie.let {
+            myListRepository.deleteMovie(it).asLiveData(Dispatchers.IO)
         }
     }
 }

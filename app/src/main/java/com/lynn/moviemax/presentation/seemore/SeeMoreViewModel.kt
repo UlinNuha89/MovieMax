@@ -12,8 +12,6 @@ import com.lynn.moviemax.data.repository.SeeMoreRepository
 import com.lynn.moviemax.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class SeeMoreViewModel(
     private val extras: Bundle?,
@@ -30,9 +28,9 @@ class SeeMoreViewModel(
 
     fun upComing(): Flow<PagingData<Movie>> = seeMoreRepository.getUpComingList().cachedIn(viewModelScope)
 
-    fun removeMovie(item: Movie) {
-        viewModelScope.launch(Dispatchers.IO) {
-            myListrepository.deleteMovie(item).collect()
+    fun removeFromMyList(movie: Movie): LiveData<ResultWrapper<Boolean>> {
+        return movie.let {
+            myListrepository.deleteMovie(it).asLiveData(Dispatchers.IO)
         }
     }
 

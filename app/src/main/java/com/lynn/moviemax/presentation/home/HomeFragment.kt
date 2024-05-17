@@ -306,7 +306,7 @@ class HomeFragment : Fragment() {
         val intent =
             Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "Check out this movie: ${movie.title}")
+                putExtra(Intent.EXTRA_TEXT, "Check out this movie: ${movie.posterPath}")
                 type = "text/plain"
             }
 
@@ -325,7 +325,7 @@ class HomeFragment : Fragment() {
                     binding.btnRemoveMyList.isVisible = true
                     binding.pbLoadingList.isVisible = false
                     binding.btnRemoveMyList.setOnClickListener {
-                        viewModel.removeMovie(movie)
+                        viewModel.removeFromMyList(movie)
                         checkMovie(movie, binding)
                     }
                 },
@@ -349,14 +349,8 @@ class HomeFragment : Fragment() {
                     binding.btnRemoveMyList.isVisible = true
                     binding.pbLoadingList.isVisible = false
                     binding.btnRemoveMyList.setOnClickListener {
-                        viewModel.removeMovie(movie)
+                        removeFromMyList(movie, binding)
                     }
-                    binding.tvMyLists.text = getString(R.string.text_mylist_remove)
-                },
-                doOnLoading = {
-                    binding.btnAddMyList.isVisible = false
-                    binding.btnRemoveMyList.isVisible = false
-                    binding.pbLoadingList.isVisible = true
                 },
                 doOnEmpty = {
                     binding.btnAddMyList.isVisible = true
@@ -365,7 +359,30 @@ class HomeFragment : Fragment() {
                     binding.btnAddMyList.setOnClickListener {
                         addToMyList(movie, binding)
                     }
-                    binding.tvMyLists.text = getString(R.string.text_my_list_add)
+                },
+            )
+        }
+    }
+
+    private fun removeFromMyList(
+        movie: Movie,
+        binding: LayoutSheetViewBinding,
+    ) {
+        viewModel.removeFromMyList(movie).observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.btnAddMyList.isVisible = true
+                    binding.btnRemoveMyList.isVisible = false
+                    binding.pbLoadingList.isVisible = false
+                    binding.btnRemoveMyList.setOnClickListener {
+                        viewModel.addToMyList(movie)
+                        checkMovie(movie, binding)
+                    }
+                },
+                doOnLoading = {
+                    binding.btnAddMyList.isVisible = false
+                    binding.btnRemoveMyList.isVisible = false
+                    binding.pbLoadingList.isVisible = true
                 },
             )
         }
