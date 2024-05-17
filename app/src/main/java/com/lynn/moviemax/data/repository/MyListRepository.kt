@@ -61,6 +61,8 @@ class MyListRepositoryImpl(
                         ),
                     )
                 affectedRow > 0
+            }.catch {
+                emit(ResultWrapper.Error(Exception(it)))
             }.onStart {
                 emit(ResultWrapper.Loading())
                 delay(1000)
@@ -87,6 +89,8 @@ class MyListRepositoryImpl(
             proceedFlow {
                 val affectedRow = dataSource.deleteMovie(item.toMovieEntity())
                 affectedRow > 0
+            }.catch {
+                emit(ResultWrapper.Error(Exception(it)))
             }.onStart {
                 emit(ResultWrapper.Loading())
                 delay(1000)

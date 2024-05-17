@@ -102,6 +102,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.room.ktx)
     implementation(libs.androidx.paging.common.android)
+    testImplementation("junit:junit:4.12")
     ksp(libs.room.compiler)
     implementation(libs.coroutine.core)
     implementation(libs.coroutine.android)
