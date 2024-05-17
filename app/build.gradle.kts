@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.ksp)
     id("kotlin-parcelize")
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -24,7 +25,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -45,7 +46,7 @@ android {
             buildConfigField(
                 type = "String",
                 name = "BASE_URL",
-                value = "\"https://api.themoviedb.org/3/movie/\""
+                value = "\"https://api.themoviedb.org/3/movie/\"",
             )
             buildConfigField(
                 type = "String",
@@ -57,7 +58,7 @@ android {
             buildConfigField(
                 type = "String",
                 name = "BASE_URL",
-                value = "\"https://api.themoviedb.org/3/movie/\""
+                value = "\"https://api.themoviedb.org/3/movie/\"",
             )
             buildConfigField(
                 type = "String",
@@ -65,6 +66,23 @@ android {
                 value = "\"Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNjBkMTBiYjdjNzllZTg3ZmI0NDkxYWI0MzRkZTQ3YyIsInN1YiI6IjY2NDIwODlkMDNlYWU1MjIzYWYxMmYyYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.deV7aVvLIDtcHaSusAM1Hpkm6wb1qAkyuOHObPA8kkk\"",
             )
         }
+    }
+}
+tasks.getByPath("preBuild").dependsOn("ktlintFormat")
+
+ktlint {
+    android.set(false)
+    ignoreFailures.set(true)
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+    }
+    kotlinScriptAdditionalPaths {
+        include(fileTree("scripts/"))
+    }
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
     }
 }
 

@@ -18,5 +18,4 @@ class NowPlayingRepositoryImpl(private val dataSource: NowPlayingDataSource) :
             dataSource.getNowPlaying().results.toMovies()
         }
     }
-
 }

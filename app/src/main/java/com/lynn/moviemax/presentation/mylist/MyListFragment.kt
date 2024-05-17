@@ -1,116 +1,92 @@
-package com.lynn.moviemax.presentation.seemore
+package com.lynn.moviemax.presentation.mylist
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.Fragment
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.lynn.moviemax.R
 import com.lynn.moviemax.data.model.Movie
-import com.lynn.moviemax.databinding.ActivitySeeMoreBinding
+import com.lynn.moviemax.databinding.FragmentMylistBinding
 import com.lynn.moviemax.databinding.LayoutSheetViewBinding
-import com.lynn.moviemax.presentation.seemore.adapter.SeeMoreAdapter
+import com.lynn.moviemax.presentation.mylist.adapter.MyListAdapter
 import com.lynn.moviemax.utils.proceedWhen
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
-class SeeMoreActivity : AppCompatActivity() {
-    private val binding: ActivitySeeMoreBinding by lazy {
-        ActivitySeeMoreBinding.inflate(layoutInflater)
-    }
-    private val viewModel: SeeMoreViewModel by viewModel {
-        parametersOf(intent.extras)
-    }
-    private val seeMoreAdapter: SeeMoreAdapter by lazy {
-        SeeMoreAdapter {
+class MyListFragment : Fragment() {
+    private lateinit var binding: FragmentMylistBinding
+    private val viewModel: MyListViewModel by viewModel()
+    private val myListAdapter: MyListAdapter by lazy {
+        MyListAdapter {
             showBottomSheetInfo(it)
         }
     }
 
-    companion object {
-        const val EXTRAS_ITEM = "EXTRAS_ITEM"
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        binding = FragmentMylistBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
-        fun startActivity(
-            context: Context,
-            category: String,
-        ) {
-            val intent = Intent(context, SeeMoreActivity::class.java)
-            intent.putExtra(EXTRAS_ITEM, category)
-            context.startActivity(intent)
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+        setupList()
+        observerMovieList()
+    }
+
+    private fun setupList() {
+        binding.rvMovieList.apply {
+            adapter = this@MyListFragment.myListAdapter
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        setOnClick()
-        setUpAdapter()
-        observeData()
-    }
-
-    private fun setOnClick() {
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
-        }
-    }
-
-    private fun observeData() {
-        viewModel.header.let {
-            binding.tvHeader.text = it
-            when (it) {
-                "Top Rated" -> setTopRated()
-                "Popular" -> setPopular()
-                "Up Coming" -> setUpComing()
-                "Now Playing" -> setNowPlaying()
-            }
-        }
-    }
-
-    private fun setUpAdapter() {
-        binding.rvItem.apply {
-            adapter = seeMoreAdapter
-        }
-    }
-
-    private fun setNowPlaying() {
-        lifecycleScope.launch {
-            viewModel.nowPlaying().collectLatest {
-                seeMoreAdapter.submitData(it)
-            }
-        }
-    }
-
-    private fun setTopRated() {
-        lifecycleScope.launch {
-            viewModel.topRated().collectLatest {
-                seeMoreAdapter.submitData(it)
-            }
-        }
-    }
-
-    private fun setPopular() {
-        lifecycleScope.launch {
-            viewModel.popular().collectLatest {
-                seeMoreAdapter.submitData(it)
-            }
-        }
-    }
-
-    private fun setUpComing() {
-        lifecycleScope.launch {
-            viewModel.upComing().collectLatest {
-                seeMoreAdapter.submitData(it)
-            }
+    private fun observerMovieList() {
+        viewModel.getMovieList().observe(viewLifecycleOwner) { result ->
+            result.proceedWhen(
+                doOnSuccess = {
+                    binding.rvMovieList.isVisible = true
+                    binding.tvError.isVisible = false
+                    binding.pbLoadingList.isVisible = false
+                    binding.ivEmptyState.root.isVisible = false
+                    result.payload?.let {
+                        myListAdapter.submitMovies(it)
+                    }
+                },
+                doOnError = {
+                    binding.rvMovieList.isVisible = false
+                    binding.tvError.isVisible = true
+                    binding.tvError.text = result.exception?.message.orEmpty()
+                    binding.pbLoadingList.isVisible = false
+                    binding.ivEmptyState.root.isVisible = false
+                },
+                doOnLoading = {
+                    binding.rvMovieList.isVisible = false
+                    binding.pbLoadingList.isVisible = true
+                    binding.tvError.isVisible = false
+                    binding.ivEmptyState.root.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.rvMovieList.isVisible = false
+                    binding.tvError.isVisible = false
+                    binding.ivEmptyState.root.isVisible = true
+                    binding.pbLoadingList.isVisible = false
+                },
+            )
         }
     }
 
     private fun showBottomSheetInfo(movie: Movie) {
-        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
         val bottomSheetBinding = LayoutSheetViewBinding.inflate(layoutInflater)
         bottomSheetBinding.apply {
             ivBannerFilm.load(movie.backdropPath)
@@ -145,7 +121,7 @@ class SeeMoreActivity : AppCompatActivity() {
         movie: Movie,
         binding: LayoutSheetViewBinding,
     ) {
-        viewModel.addToMyList(movie).observe(this) {
+        viewModel.addToMyList(movie).observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.btnAddMyList.isVisible = false
@@ -169,7 +145,7 @@ class SeeMoreActivity : AppCompatActivity() {
         movie: Movie,
         binding: LayoutSheetViewBinding,
     ) {
-        viewModel.checkMovieById(movie).observe(this) {
+        viewModel.checkMovieById(movie).observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.btnAddMyList.isVisible = false

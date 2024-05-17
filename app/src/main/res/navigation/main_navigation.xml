@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/mylistFragment"
-        android:name="com.lynn.moviemax.presentation.mylist.MylistFragment"
+        android:name="com.lynn.moviemax.presentation.mylist.MyListFragment"
         android:label="fragment_mylist"
         tools:layout="@layout/fragment_mylist" />
 </navigation>

@@ -11,11 +11,13 @@ import com.lynn.moviemax.data.paging.UpComingPagingSource
 import com.lynn.moviemax.data.source.network.service.MovieMaxApiService
 import kotlinx.coroutines.flow.Flow
 
-
 interface SeeMoreRepository {
     fun getNowPlayingList(): Flow<PagingData<Movie>>
+
     fun getUpComingList(): Flow<PagingData<Movie>>
+
     fun getTopRatedList(): Flow<PagingData<Movie>>
+
     fun getPopularList(): Flow<PagingData<Movie>>
 }
 
@@ -23,28 +25,28 @@ class SeeMoreRepositoryImpl(private val service: MovieMaxApiService) : SeeMoreRe
     override fun getNowPlayingList(): Flow<PagingData<Movie>> {
         return Pager(
             pagingSourceFactory = { NowPlayingPagingSource(service) },
-            config = PagingConfig(pageSize = 5)
+            config = PagingConfig(pageSize = 5),
         ).flow
     }
 
     override fun getUpComingList(): Flow<PagingData<Movie>> {
         return Pager(
-                pagingSourceFactory = { UpComingPagingSource(service) },
-        config = PagingConfig(pageSize = 5)
+            pagingSourceFactory = { UpComingPagingSource(service) },
+            config = PagingConfig(pageSize = 5),
         ).flow
     }
 
     override fun getTopRatedList(): Flow<PagingData<Movie>> {
-       return Pager(
-           pagingSourceFactory = { TopRatedPagingSource(service) },
-           config = PagingConfig(pageSize = 5)
-       ).flow
+        return Pager(
+            pagingSourceFactory = { TopRatedPagingSource(service) },
+            config = PagingConfig(pageSize = 5),
+        ).flow
     }
 
     override fun getPopularList(): Flow<PagingData<Movie>> {
         return Pager(
             pagingSourceFactory = { PopularPagingSource(service) },
-            config = PagingConfig(pageSize = 5)
+            config = PagingConfig(pageSize = 5),
         ).flow
     }
 }

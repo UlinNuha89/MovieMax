@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.postDelayed
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.lynn.moviemax.R
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.FragmentHomeBinding
 import com.lynn.moviemax.databinding.LayoutSheetViewBinding
@@ -44,14 +46,18 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setupOnclickSeeMore()
         getNowPlayingData()
@@ -132,7 +138,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     private fun getPopularData() {
         viewModel.getDataPopular().observe(viewLifecycleOwner) {
             it.proceedWhen(
@@ -189,7 +194,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     private fun showBottomSheetInfo(movie: Movie) {
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         val bottomSheetBinding = LayoutSheetViewBinding.inflate(layoutInflater)
@@ -201,24 +205,81 @@ class HomeFragment : Fragment() {
             tvRelease.text = movie.releaseDate
             tvRating.text = movie.voteAverage.toString()
         }
-
+        checkMovie(movie, bottomSheetBinding)
         bottomSheetBinding.btnShared.setOnClickListener {
             bottomSheetDialog.dismiss()
             showShareBottomSheet(movie)
         }
-
         bottomSheetDialog.setContentView(bottomSheetBinding.root)
         bottomSheetDialog.show()
     }
 
     private fun showShareBottomSheet(movie: Movie) {
-        val intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "Check out this movie: ${movie.title}")
-            type = "text/plain"
-        }
+        val intent =
+            Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Check out this movie: ${movie.title}")
+                type = "text/plain"
+            }
 
         val shareIntent = Intent.createChooser(intent, null)
         startActivity(shareIntent)
+    }
+
+    private fun addToMyList(
+        movie: Movie,
+        binding: LayoutSheetViewBinding,
+    ) {
+        viewModel.addToMyList(movie).observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.btnAddMyList.isVisible = false
+                    binding.btnRemoveMyList.isVisible = true
+                    binding.pbLoadingList.isVisible = false
+                    binding.btnRemoveMyList.setOnClickListener {
+                        viewModel.removeMovie(movie)
+                        checkMovie(movie, binding)
+                    }
+                },
+                doOnLoading = {
+                    binding.btnAddMyList.isVisible = false
+                    binding.btnRemoveMyList.isVisible = false
+                    binding.pbLoadingList.isVisible = true
+                },
+            )
+        }
+    }
+
+    private fun checkMovie(
+        movie: Movie,
+        binding: LayoutSheetViewBinding,
+    ) {
+        viewModel.checkMovieById(movie).observe(viewLifecycleOwner) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.btnAddMyList.isVisible = false
+                    binding.btnRemoveMyList.isVisible = true
+                    binding.pbLoadingList.isVisible = false
+                    binding.btnRemoveMyList.setOnClickListener {
+                        viewModel.removeMovie(movie)
+                    }
+                    binding.tvMyLists.text = getString(R.string.text_mylist_remove)
+                },
+                doOnLoading = {
+                    binding.btnAddMyList.isVisible = false
+                    binding.btnRemoveMyList.isVisible = false
+                    binding.pbLoadingList.isVisible = true
+                },
+                doOnEmpty = {
+                    binding.btnAddMyList.isVisible = true
+                    binding.btnRemoveMyList.isVisible = false
+                    binding.pbLoadingList.isVisible = false
+                    binding.btnAddMyList.setOnClickListener {
+                        addToMyList(movie, binding)
+                    }
+                    binding.tvMyLists.text = getString(R.string.text_my_list_add)
+                },
+            )
+        }
     }
 }

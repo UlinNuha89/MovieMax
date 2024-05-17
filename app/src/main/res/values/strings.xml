@@ -11,4 +11,6 @@
     <string name="text_info">Info</string>
     <string name="text_my_lists">My List</string>
     <string name="text_share">Share</string>
+    <string name="text_mylist_remove">Remove</string>
+    <string name="text_my_list_add">Add</string>
 </resources>

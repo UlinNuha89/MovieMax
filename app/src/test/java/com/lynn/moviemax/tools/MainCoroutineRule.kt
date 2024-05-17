@@ -16,7 +16,6 @@ Github : https://github.com/hermasyp
 @ExperimentalCoroutinesApi
 class MainCoroutineRule(private val dispatcher: TestDispatcher = StandardTestDispatcher()) :
     TestWatcher() {
-
     override fun starting(description: Description) {
         super.starting(description)
         Dispatchers.setMain(dispatcher)
