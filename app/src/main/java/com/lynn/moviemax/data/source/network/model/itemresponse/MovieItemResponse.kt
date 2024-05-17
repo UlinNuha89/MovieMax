@@ -22,5 +22,5 @@ data class MovieItemResponse(
     @SerializedName("vote_average")
     var voteAverage: Double? = null,
     @SerializedName("vote_count")
-    var voteCount: Int? = null
+    var voteCount: Int? = null,
 )

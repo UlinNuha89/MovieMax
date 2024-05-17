@@ -14,6 +14,5 @@ class App : Application() {
             androidContext(this@App)
             modules(AppModules.modules)
         }
-
     }
 }

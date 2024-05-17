@@ -8,5 +8,5 @@ data class Movie(
     var posterPath: String,
     var releaseDate: String,
     var voteAverage: Double,
-    var voteCount: Int
+    var voteCount: Int,
 )

@@ -16,9 +16,8 @@ class TopRatedPagingSource(private val service: MovieMaxApiService) :
             LoadResult.Page(
                 data = response.results.toMovies(),
                 prevKey = if (position == 1) null else (position - 1),
-                nextKey = if (position == response.totalPages) null else (position + 1)
+                nextKey = if (position == response.totalPages) null else (position + 1),
             )
-
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
@@ -30,5 +29,4 @@ class TopRatedPagingSource(private val service: MovieMaxApiService) :
                 ?: state.closestPageToPosition(it)?.nextKey?.minus(1)
         }
     }
-
 }

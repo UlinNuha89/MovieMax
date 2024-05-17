@@ -22,6 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="24sp"
+        android:textColor="@color/gray"
         android:layout_marginHorizontal="8dp"
         tools:text="header title"
         app:layout_constraintStart_toEndOf="@id/btn_back"

@@ -1,17 +1,17 @@
-package com.lynn.moviemax.presentation.home.adapter
+package com.lynn.moviemax.presentation.mylist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.lynn.moviemax.data.model.Movie
 import com.lynn.moviemax.databinding.ItemMovieBinding
 
-class MovieAdapter(private val itemClick: (Movie) -> Unit) :
-    RecyclerView.Adapter<MovieAdapter.ItemMovieViewHolder>() {
-    private val dataDiffer =
+class MyListAdapter(val itemClick: (Movie) -> Unit) : Adapter<MyListAdapter.ItemMyListViewHolder>() {
+    private var asyncDataDiffer =
         AsyncListDiffer(
             this,
             object : DiffUtil.ItemCallback<Movie>() {
@@ -26,42 +26,42 @@ class MovieAdapter(private val itemClick: (Movie) -> Unit) :
                     oldItem: Movie,
                     newItem: Movie,
                 ): Boolean {
-                    return oldItem.hashCode() == newItem.hashCode()
+                    return oldItem.hashCode() == oldItem.hashCode()
                 }
             },
         )
 
-    fun submitData(data: List<Movie>) {
-        dataDiffer.submitList(data)
+    fun submitMovies(movies: List<Movie>) {
+        asyncDataDiffer.submitList(movies)
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): ItemMovieViewHolder {
-        val binding =
-            ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ItemMovieViewHolder(binding, itemClick)
+    ): ItemMyListViewHolder {
+        val binding = ItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ItemMyListViewHolder(binding, itemClick)
     }
+
+    override fun getItemCount(): Int = asyncDataDiffer.currentList.size
 
     override fun onBindViewHolder(
-        holder: ItemMovieViewHolder,
+        holder: ItemMyListViewHolder,
         position: Int,
     ) {
-        holder.bindView(dataDiffer.currentList[position])
+        holder.bindView(asyncDataDiffer.currentList[position])
     }
 
-    override fun getItemCount(): Int = dataDiffer.currentList.size
-
-    class ItemMovieViewHolder(
+    class ItemMyListViewHolder(
         private val binding: ItemMovieBinding,
         val itemClick: (Movie) -> Unit,
-    ) : RecyclerView.ViewHolder(binding.root) {
+    ) : ViewHolder(binding.root) {
         fun bindView(item: Movie) {
             with(item) {
                 binding.ivMovieImg.load(item.posterPath) {
                     crossfade(true)
                 }
+
                 itemView.setOnClickListener {
                     itemClick(this)
                 }

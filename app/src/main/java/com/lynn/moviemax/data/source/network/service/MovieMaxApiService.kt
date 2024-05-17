@@ -11,7 +11,6 @@ import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 interface MovieMaxApiService {
-
     @Headers(
         "Accept: application/json",
         "Authorization: ${BuildConfig.AUTHORIZATION}",
@@ -19,7 +18,7 @@ interface MovieMaxApiService {
     @GET("now_playing")
     suspend fun getNowPlaying(
         @Query("language") language: String = "en-US",
-        @Query("page") page: Int? = 1
+        @Query("page") page: Int? = 1,
     ): MovieResponse
 
     @Headers(
@@ -29,7 +28,7 @@ interface MovieMaxApiService {
     @GET("popular")
     suspend fun getPopular(
         @Query("language") language: String = "en-US",
-        @Query("page") page: Int? = 1
+        @Query("page") page: Int? = 1,
     ): MovieResponse
 
     @Headers(
@@ -39,7 +38,7 @@ interface MovieMaxApiService {
     @GET("upcoming")
     suspend fun getUpcoming(
         @Query("language") language: String = "en-US",
-        @Query("page") page: Int? = 1
+        @Query("page") page: Int? = 1,
     ): MovieResponse
 
     @Headers(
@@ -49,7 +48,7 @@ interface MovieMaxApiService {
     @GET("top_rated")
     suspend fun getTopRated(
         @Query("language") language: String = "en-US",
-        @Query("page") page: Int? = 1
+        @Query("page") page: Int? = 1,
     ): MovieResponse
 
     companion object {

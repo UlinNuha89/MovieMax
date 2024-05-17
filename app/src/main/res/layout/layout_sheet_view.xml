@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/iv_banner_film"
             android:layout_width="match_parent"
@@ -41,6 +40,7 @@
             android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_poster"
@@ -53,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:layout_marginTop="4dp"
+            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@id/iv_poster"
             app:layout_constraintTop_toBottomOf="@id/tv_title_film"
             tools:text="2023-02-10" />
@@ -62,12 +63,11 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
-            android:src="@drawable/ic_star"
             android:scaleType="centerCrop"
-            app:layout_constraintStart_toEndOf="@id/tv_release"
-            app:layout_constraintTop_toTopOf="@id/tv_release"
+            android:src="@drawable/ic_star"
             app:layout_constraintBottom_toBottomOf="@id/tv_release"
-            />
+            app:layout_constraintStart_toEndOf="@id/tv_release"
+            app:layout_constraintTop_toTopOf="@id/tv_release" />
 
         <TextView
             android:id="@+id/tv_rating"
@@ -75,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
+            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@id/iv_star"
             app:layout_constraintTop_toBottomOf="@id/tv_title_film"
             tools:text="7.8" />
@@ -85,16 +86,16 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_poster"
             tools:text="@tools:sample/lorem/random" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_back"
+            android:id="@+id/btn_add_my_list"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:layout_marginStart="80dp"
             android:layout_marginTop="32dp"
             android:gravity="center"
             android:insetLeft="0dp"
@@ -106,10 +107,34 @@
             app:icon="@drawable/ic_plus"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
-            app:iconSize="20dp"
+            app:iconSize="30dp"
             app:iconTint="@color/black"
             app:layout_constraintBottom_toTopOf="@id/tv_my_lists"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_my_lists"
+            app:layout_constraintStart_toStartOf="@id/tv_my_lists"
+            app:layout_constraintTop_toBottomOf="@id/tv_desc_film" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_remove_my_list"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            app:backgroundTint="@color/gray_bg"
+            app:cornerRadius="40dp"
+            app:icon="@drawable/ic_delete"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="30dp"
+            app:iconTint="@color/black"
+            app:layout_constraintBottom_toTopOf="@id/tv_my_lists"
+            app:layout_constraintEnd_toEndOf="@id/tv_my_lists"
+            app:layout_constraintStart_toStartOf="@id/tv_my_lists"
             app:layout_constraintTop_toBottomOf="@id/tv_desc_film" />
 
         <com.google.android.material.button.MaterialButton
@@ -117,7 +142,6 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:layout_marginEnd="80dp"
             android:layout_marginTop="32dp"
             android:gravity="center"
             android:insetLeft="0dp"
@@ -132,7 +156,8 @@
             app:iconSize="22dp"
             app:iconTint="@color/black"
             app:layout_constraintBottom_toTopOf="@id/tv_share"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_share"
+            app:layout_constraintStart_toStartOf="@id/tv_share"
             app:layout_constraintTop_toBottomOf="@id/tv_desc_film" />
 
         <TextView
@@ -142,10 +167,10 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="12dp"
             android:text="@string/text_my_lists"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/btn_back"
-            app:layout_constraintStart_toStartOf="@id/btn_back"
-            app:layout_constraintTop_toBottomOf="@id/btn_back" />
+            app:layout_constraintEnd_toStartOf="@id/tv_share"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tv_share"
@@ -154,11 +179,24 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="12dp"
             android:text="@string/text_share"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/btn_shared"
-            app:layout_constraintStart_toStartOf="@id/btn_shared"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_my_lists"
             app:layout_constraintTop_toBottomOf="@id/btn_shared" />
 
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/pb_loading_list"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="32dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/tv_my_lists"
+            app:layout_constraintEnd_toEndOf="@id/tv_my_lists"
+            app:layout_constraintStart_toStartOf="@id/tv_my_lists"
+            app:layout_constraintTop_toBottomOf="@id/tv_desc_film"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
