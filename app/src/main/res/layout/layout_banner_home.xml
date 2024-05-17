@@ -76,11 +76,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:text="@string/text_share"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/iv_poster_movie"
             app:layout_constraintEnd_toEndOf="@id/iv_share"
-            app:layout_constraintStart_toStartOf="@id/iv_share"
-            tools:text="Share" />
+            app:layout_constraintStart_toStartOf="@id/iv_share" />
 
         <TextView
             android:id="@+id/tv_info"
