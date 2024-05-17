@@ -128,11 +128,33 @@ class HomeFragment : Fragment() {
     private fun getNowPlayingData() {
         viewModel.getDataNowPlaying().observe(viewLifecycleOwner) {
             it.proceedWhen(
+                doOnLoading = {
+                    binding.rvItemNowPlaying.isVisible = false
+                    binding.movieNowPlayingShimmer.isVisible = true
+                    binding.shimmerFrameLayoutNowPlaying.startShimmer()
+                    binding.layoutStateErrorNowPlaying.tvError.isVisible = false
+                },
                 doOnSuccess = {
+                    binding.rvItemNowPlaying.isVisible = true
+                    binding.shimmerFrameLayoutNowPlaying.isVisible = false
                     it.payload?.let { data ->
                         bindNowPlaying(data)
                         setupBanner(data)
                     }
+                    binding.layoutStateErrorNowPlaying.tvError.isVisible = false
+                },
+                doOnError = {
+                    binding.movieNowPlayingShimmer.isVisible = false
+                    binding.rvItemNowPlaying.isVisible = false
+                    binding.layoutStateErrorNowPlaying.tvError.isVisible = true
+                    binding.layoutStateErrorNowPlaying.tvError.text = it.exception.toString()
+                },
+                doOnEmpty = {
+                    binding.movieNowPlayingShimmer.isVisible = false
+                    binding.rvItemNowPlaying.isVisible = false
+                    binding.layoutStateErrorNowPlaying.tvError.isVisible = true
+                    binding.layoutStateErrorNowPlaying.tvError.text =
+                        getString(R.string.text_data_empty)
                 },
             )
         }
@@ -141,10 +163,32 @@ class HomeFragment : Fragment() {
     private fun getPopularData() {
         viewModel.getDataPopular().observe(viewLifecycleOwner) {
             it.proceedWhen(
+                doOnLoading = {
+                    binding.rvItemPopular.isVisible = false
+                    binding.moviePopularShimmer.isVisible = true
+                    binding.shimmerFrameLayoutPopular.startShimmer()
+                    binding.layoutStateErrorPopular.tvError.isVisible = false
+                },
                 doOnSuccess = {
+                    binding.rvItemPopular.isVisible = true
+                    binding.shimmerFrameLayoutPopular.isVisible = false
                     it.payload?.let { data ->
                         bindPopular(data)
                     }
+                    binding.layoutStateErrorPopular.tvError.isVisible = false
+                },
+                doOnError = {
+                    binding.moviePopularShimmer.isVisible = false
+                    binding.rvItemPopular.isVisible = false
+                    binding.layoutStateErrorPopular.tvError.isVisible = true
+                    binding.layoutStateErrorPopular.tvError.text = it.exception.toString()
+                },
+                doOnEmpty = {
+                    binding.moviePopularShimmer.isVisible = false
+                    binding.rvItemPopular.isVisible = false
+                    binding.layoutStateErrorPopular.tvError.isVisible = true
+                    binding.layoutStateErrorPopular.tvError.text =
+                        getString(R.string.text_data_empty)
                 },
             )
         }
@@ -153,10 +197,32 @@ class HomeFragment : Fragment() {
     private fun getUpcomingData() {
         viewModel.getDataUpcoming().observe(viewLifecycleOwner) {
             it.proceedWhen(
+                doOnLoading = {
+                    binding.rvItemUpcoming.isVisible = false
+                    binding.movieUpComingShimmer.isVisible = true
+                    binding.shimmerFrameLayoutUpComing.startShimmer()
+                    binding.layoutStateErrorUpComing.tvError.isVisible = false
+                },
                 doOnSuccess = {
+                    binding.rvItemUpcoming.isVisible = true
+                    binding.shimmerFrameLayoutUpComing.isVisible = false
                     it.payload?.let { data ->
                         bindUpcoming(data)
                     }
+                    binding.layoutStateErrorUpComing.tvError.isVisible = false
+                },
+                doOnError = {
+                    binding.movieUpComingShimmer.isVisible = false
+                    binding.rvItemUpcoming.isVisible = false
+                    binding.layoutStateErrorUpComing.tvError.isVisible = true
+                    binding.layoutStateErrorUpComing.tvError.text = it.exception.toString()
+                },
+                doOnEmpty = {
+                    binding.movieUpComingShimmer.isVisible = false
+                    binding.rvItemUpcoming.isVisible = false
+                    binding.layoutStateErrorUpComing.tvError.isVisible = true
+                    binding.layoutStateErrorUpComing.tvError.text =
+                        getString(R.string.text_data_empty)
                 },
             )
         }
@@ -165,10 +231,32 @@ class HomeFragment : Fragment() {
     private fun getTopRatedData() {
         viewModel.getDataTopRated().observe(viewLifecycleOwner) {
             it.proceedWhen(
+                doOnLoading = {
+                    binding.rvItemTopRated.isVisible = false
+                    binding.movieTopRatedShimmer.isVisible = true
+                    binding.shimmerFrameLayoutTopRated.startShimmer()
+                    binding.layoutStateErrorTopRated.tvError.isVisible = false
+                },
                 doOnSuccess = {
+                    binding.rvItemTopRated.isVisible = true
+                    binding.shimmerFrameLayoutTopRated.isVisible = false
                     it.payload?.let { data ->
                         bindTopRated(data)
                     }
+                    binding.layoutStateErrorTopRated.tvError.isVisible = false
+                },
+                doOnError = {
+                    binding.movieTopRatedShimmer.isVisible = false
+                    binding.rvItemTopRated.isVisible = false
+                    binding.layoutStateErrorTopRated.tvError.isVisible = true
+                    binding.layoutStateErrorTopRated.tvError.text = it.exception.toString()
+                },
+                doOnEmpty = {
+                    binding.movieTopRatedShimmer.isVisible = false
+                    binding.rvItemTopRated.isVisible = false
+                    binding.layoutStateErrorTopRated.tvError.isVisible = true
+                    binding.layoutStateErrorTopRated.tvError.text =
+                        getString(R.string.text_data_empty)
                 },
             )
         }
