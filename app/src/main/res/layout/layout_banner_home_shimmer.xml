@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="450dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_poster_movie"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@color/gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_black_gradient_banner" />
+
+        <TextView
+            android:id="@+id/tv_movie_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:background="@color/gray"
+            app:layout_constraintBottom_toTopOf="@+id/tv_movie_desc"
+            app:layout_constraintEnd_toStartOf="@id/iv_info"
+            app:layout_constraintStart_toStartOf="@+id/iv_poster_movie"
+             />
+
+        <TextView
+            android:id="@+id/tv_movie_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:background="@color/gray"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_movie_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_movie_name"
+            tools:text="@tools:sample/lorem/random" />
+
+        <ImageView
+            android:id="@+id/iv_info"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginHorizontal="16dp"
+            android:src="@drawable/iv_info"
+            app:layout_constraintBottom_toTopOf="@+id/tv_info"
+            app:layout_constraintEnd_toStartOf="@id/iv_share"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginHorizontal="16dp"
+            android:src="@drawable/iv_share"
+            app:layout_constraintBottom_toTopOf="@+id/tv_share"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/text_share"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_poster_movie"
+            app:layout_constraintEnd_toEndOf="@id/iv_share"
+            app:layout_constraintStart_toStartOf="@id/iv_share" />
+
+        <TextView
+            android:id="@+id/tv_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/text_info"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_poster_movie"
+            app:layout_constraintEnd_toEndOf="@id/iv_info"
+            app:layout_constraintStart_toStartOf="@id/iv_info" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
