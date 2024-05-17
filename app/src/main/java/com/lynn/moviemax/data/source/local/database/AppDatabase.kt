@@ -9,7 +9,7 @@ import com.lynn.moviemax.data.source.local.database.entity.MovieEntity
 
 @Database(
     entities = [MovieEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
 abstract class AppDatabase : RoomDatabase() {

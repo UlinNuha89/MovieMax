@@ -11,7 +11,6 @@ import com.lynn.moviemax.utils.proceedFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
@@ -41,7 +40,7 @@ class MyListRepositoryImpl(
                 emit(ResultWrapper.Error(Exception(it)))
             }.onStart {
                 emit(ResultWrapper.Loading())
-                delay(2000)
+                delay(500)
             }
     }
 
@@ -62,8 +61,9 @@ class MyListRepositoryImpl(
                         ),
                     )
                 affectedRow > 0
-            } ?: flow {
-                emit(ResultWrapper.Error(IllegalStateException("Product ID not Found")))
+            }.onStart {
+                emit(ResultWrapper.Loading())
+                delay(1000)
             }
         }
     }
@@ -79,13 +79,18 @@ class MyListRepositoryImpl(
                 ResultWrapper.Empty(it.payload)
             }.catch {
                 emit(ResultWrapper.Error(Exception(it)))
-            }.onStart {
-                emit(ResultWrapper.Loading())
-                delay(1000)
             }
     }
 
     override fun deleteMovie(item: Movie): Flow<ResultWrapper<Boolean>> {
-        return proceedFlow { dataSource.deleteMovie(item.toMovieEntity()) > 0 }
+        return item.id.let { id ->
+            proceedFlow {
+                val affectedRow = dataSource.deleteMovie(item.toMovieEntity())
+                affectedRow > 0
+            }.onStart {
+                emit(ResultWrapper.Loading())
+                delay(1000)
+            }
+        }
     }
 }
